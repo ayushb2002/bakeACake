@@ -34,11 +34,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var flag = true;
         await User.findOne({
-            'email': `${req.query.email}`
+            'email': `${req.body.email}`
         }).then(docs => {
             if (Object.keys(docs).length > 0) {
             flag = false;
@@ -48,10 +48,10 @@ app.post('/register', async (req, res) => {
         if(flag)
         {
             const user = new User();
-            user.enrollment = `${req.query.enrollment}`;
-            user.email = `${req.query.email}`;
-            user.name = `${req.query.name}`;
-            user.password = bcrypt.hashSync(`${req.query.password}`, salt);
+            user.enrollment = `${req.body.enrollment}`;
+            user.email = `${req.body.email}`;
+            user.name = `${req.body.name}`;
+            user.password = bcrypt.hashSync(`${req.body.password}`, salt);
             user.save();
         }
         res.send({'success': flag});
@@ -63,20 +63,31 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var flag = false;
+        var name = '';
+        var enrollment = '';
         await User.findOne({
-            'email': `${req.query.email}`
+            'email': `${req.body.email}`
         }).then((docs) => {
-            if(bcrypt.compareSync(`${req.query.password}`, docs.password))
+            if(bcrypt.compareSync(`${req.body.password}`, docs.password))
             {
                 flag = true;
+                name = docs.name;
+                enrollment = docs.enrollment;
             }
         }).catch((err) => {
             console.log(err);
         });
-        res.send({'success': flag});
+        if(flag)
+        {
+            res.send({'success': flag, 'name': name, 'enrollment': enrollment});
+        }
+        else
+        {
+            res.send({'success': flag});
+        }
     }
     else
     {
@@ -85,12 +96,12 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/addQuestion', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        var qno = `${req.query.qno}`;
-        var ques = `${req.query.question}`;
-        var file = `${req.query.file}`;
-        var answer = `${req.query.answer}`;
+        var qno = `${req.body.qno}`;
+        var ques = `${req.body.question}`;
+        var file = `${req.body.file}`;
+        var answer = `${req.body.answer}`;
         var flag = true;
 
         await Question.findOne({
@@ -125,12 +136,12 @@ app.post('/addQuestion', async (req, res) => {
 });
 
 app.post('/updateLeaderboard', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var flag = false;
         var points = 10;
-        const user = await User.findOne({'enrollment': `${req.query.enrollment}`});
-        const question = await Question.findOne({'qNo': `${req.query.qNo}`});
+        const user = await User.findOne({'enrollment': `${req.body.enrollment}`});
+        const question = await Question.findOne({'qNo': `${req.body.qNo}`});
         if(user)
         {
             await Leaderboard.findOne({
@@ -173,7 +184,7 @@ app.post('/updateLeaderboard', async (req, res) => {
 });
 
 app.get('/fetchLeaderboard', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         await Leaderboard.find({}).then((docs) => {
             var leaderMap = {};
@@ -198,9 +209,9 @@ app.get('/fetchLeaderboard', async (req, res) => {
 });
 
 app.post('/returnQuestion', async (req, res) => { 
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        await Question.findOne({'qNo': `${req.query.qNo}`}).then((docs) => {
+        await Question.findOne({'qNo': `${req.body.qNo}`}).then((docs) => {
             res.send({'question': docs.question, 'file': docs.file});
         }).catch((err) => {
             console.log(err);
@@ -214,9 +225,9 @@ app.post('/returnQuestion', async (req, res) => {
 });
 
 app.post('/fetchUserProgress', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        await User.findOne({'enrollment': `${req.query.enrollment}`}).then(async (user)=>{
+        await User.findOne({'enrollment': `${req.body.enrollment}`}).then(async (user)=>{
             await Leaderboard.findOne({'user': user}).then(async (lb)=>{
                 await Question.findOne({'_id': lb.lastAttempt._id.toString()}).then((lastQuestion)=>{
                     res.send({'qNo': lastQuestion.qNo, 'points': lb.points});
@@ -231,10 +242,10 @@ app.post('/fetchUserProgress', async (req, res) => {
 });
 
 app.post('/matchAnswer', async(req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        await Question.findOne({'qNo': `${req.query.qNo}`}).then(async (docs) => {
-            if(bcrypt.compareSync(docs.answer, `${req.query.answer}`))
+        await Question.findOne({'qNo': `${req.body.qNo}`}).then(async (docs) => {
+            if(bcrypt.compareSync(docs.answer, `${req.body.answer}`))
             {
                 res.send({'verified': true});
             }

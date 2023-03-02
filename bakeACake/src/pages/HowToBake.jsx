@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const Leaderboard = () => {
+const HowToBake = () => {
   return (
     <section>
     <Navbar />
@@ -14,4 +14,4 @@ const Leaderboard = () => {
   )
 }
 
-export default Leaderboard
+export default HowToBake
