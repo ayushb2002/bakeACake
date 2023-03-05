@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Question = require('./models/questions');
 const Leaderboard = require('./models/leaderboards');
+const { request } = require('express');
 const app = express();
 require('dotenv').config();
 app.use(cors());
@@ -53,6 +54,13 @@ app.post('/register', async (req, res) => {
             user.name = `${req.body.name}`;
             user.password = bcrypt.hashSync(`${req.body.password}`, salt);
             user.save();
+
+            const q = await Question.findOne({'qNo': 0});
+            const lb = new Leaderboard();
+            lb.user = user;
+            lb.points = 0;
+            lb.lastAttempt = q;
+            lb.save();
         }
         res.send({'success': flag});
     }
@@ -96,12 +104,12 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/addQuestion', async (req, res) => {
-    if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
+    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
     {
-        var qno = `${req.body.qno}`;
-        var ques = `${req.body.question}`;
-        var file = `${req.body.file}`;
-        var answer = `${req.body.answer}`;
+        var qno = `${req.query.qno}`;
+        var ques = `${req.query.question}`;
+        var file = `${req.query.file}`;
+        var answer = `${req.query.answer}`;
         var flag = true;
 
         await Question.findOne({
@@ -227,13 +235,31 @@ app.post('/returnQuestion', async (req, res) => {
 app.post('/fetchUserProgress', async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        await User.findOne({'enrollment': `${req.body.enrollment}`}).then(async (user)=>{
-            await Leaderboard.findOne({'user': user}).then(async (lb)=>{
-                await Question.findOne({'_id': lb.lastAttempt._id.toString()}).then((lastQuestion)=>{
+        const user = await User.findOne({'enrollment': `${req.body.enrollment}`});
+        if(user != null)
+        {
+            const lb = await Leaderboard.findOne({'user': user});
+            if (lb != null)
+            {
+                const lastQuestion = await Question.findOne({'_id': lb.lastAttempt._id.toString()});
+                if(lastQuestion != null)
+                {
                     res.send({'qNo': lastQuestion.qNo, 'points': lb.points});
-                }).catch(err3 => {console.log(err3); res.send({'error': err3.message})});
-            }).catch(err2 => {console.log(err2); res.send({'error': err2.message})});
-        }).catch(err1 => {console.log(err1); res.send({'error': err1.message})});
+                }
+                else
+                {
+                    res.send({'error': 'Question not found!'});
+                }
+            }
+            else
+            {
+                res.send({'error': 'Leaderboard is not updated!'});
+            }
+        }
+        else
+        {
+            res.send({'error': 'User does not exist!'});
+        }
     }
     else
     {

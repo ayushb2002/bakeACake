@@ -31,15 +31,17 @@ const Register = () => {
         enrollment: enrollment,
         password: password,
       });
-      console.log(response.data);
       if (response.data.success) {
         toast.success('Registered successfully!');
+        setTimeout(() => {
+          window.location.href ='/login';
+        }, 1000);
       } else {
         toast.error('Could not register. Kindly check your data and try again!');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     }
     catch(err)
     {
