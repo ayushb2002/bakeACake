@@ -22,7 +22,7 @@ const Login = () => {
     e.preventDefault();
     try
     {
-      const response = await axios.post('http://127.0.0.1:4000/login', {
+      const response = await axios.post('https://bakeacake.onrender.com/login', {
       access_token: import.meta.env.VITE_ACCESS_TOKEN,
       email: email,
       password: password

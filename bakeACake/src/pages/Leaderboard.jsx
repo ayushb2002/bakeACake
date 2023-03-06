@@ -14,7 +14,7 @@ const Leaderboard = () => {
       toast('It usually takes a few seconds to load the leaderboard');
       try
       {
-        const response = await axios.post('http://127.0.0.1:4000/fetchLeaderboard', {
+        const response = await axios.post('https://bakeacake.onrender.com/fetchLeaderboard', {
         access_token: import.meta.env.VITE_ACCESS_TOKEN
       });
       const leaderboard = await response.data.data;
