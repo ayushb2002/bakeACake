@@ -27,14 +27,24 @@ const Profile = () => {
     <section>
     <Navbar />
     <div className='p-10 flex justify-center lg:mb-28'>
-      <div className="card w-96 bg-base-100 shadow-xl">
+      <div className="card bg-base-100 shadow-xl">
         <figure className="px-10 pt-10">
           <img src="https://picsum.photos/300/200" alt="Avatar" className="rounded-xl" />
         </figure>
-        <div className="card-body items-center text-center">
-          <h2 className="card-title">{name}</h2>
-          <p>Enrollment Number - {enrollment}</p>
-          <p>Email Address - {email}</p>
+        <div className="card-body lg:text-center lg:items-center">
+          <h2 className="card-title font-bold text-3xl font-Satisfy">{name}</h2>
+          <table className='text-left font-Merriweather mt-5'>
+            <tbody>
+            <tr>
+              <td className='font-bold'>Enrollment</td>
+              <td className='pl-5'>{enrollment}</td>
+            </tr>
+            <tr>
+              <td className='font-bold'>Email Address</td>
+              <td className='pl-5'>{email}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

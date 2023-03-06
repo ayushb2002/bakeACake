@@ -191,24 +191,47 @@ app.post('/updateLeaderboard', async (req, res) => {
     }
 });
 
-app.get('/fetchLeaderboard', async (req, res) => {
+app.post('/fetchLeaderboard', async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
-        await Leaderboard.find({}).then((docs) => {
-            var leaderMap = {};
-                docs.forEach(doc => {
-                    leaderMap[doc['_id']] = {
-                        'user': doc.user,
+        var leaderMap = {};
+        await Leaderboard.find({}).sort({date: -1}).then(async (docs) => {
+            var count = 0;
+                docs.forEach(async (doc) => {
+                    leaderMap[count] = {
+                        'user': doc.user._id.toString(),
                         'points': doc.points,
                         'lastAccepted': doc.date,
-                        'lastAttempt': doc.lastAttempt
+                        'lastAttempt': doc.lastAttempt._id.toString()
                     };
+                    count+=1;
                 });
-                res.send({'data':leaderMap});
         }).catch((err) => {
             console.log(err);
             res.send({'error': err});
         });
+
+        for(var i=0;i<Object.keys(leaderMap).length; i++) {
+            leader = leaderMap[i];
+            await User.findOne({'_id':leader.user}).then((user) => {
+                leader['user'] = user.name;
+            }).catch((err) => {
+                console.log(err);
+                res.send({'error': err});
+                return;
+            });
+
+            await Question.findOne({'_id': leader.lastAttempt}).then((question) => {
+                leader['lastAttempt'] = question.qNo;
+            }).catch((err) => {
+                console.log(err);
+                res.send({'error': err});
+                return;
+            });
+        }
+        setTimeout(() => {
+            res.send({'data':leaderMap});
+        }, 2500);
     }
     else
     {
@@ -271,9 +294,13 @@ app.post('/matchAnswer', async(req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         await Question.findOne({'qNo': `${req.body.qNo}`}).then(async (docs) => {
-            if(bcrypt.compareSync(docs.answer, `${req.body.answer}`))
+            if(bcrypt.compareSync(`${req.body.answer}`, docs.answer))
             {
                 res.send({'verified': true});
+            }
+            else
+            {
+                res.send({'verified': false});
             }
         }).catch((err) => {
             console.log(err);
