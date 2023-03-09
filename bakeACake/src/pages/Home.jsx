@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const response = axios.get('https://bakeacake.onrender.com/');
+      const response = await axios.get('https://bakeacake.onrender.com/');
       const result = await response.json();
       console.log(result);
     })();
