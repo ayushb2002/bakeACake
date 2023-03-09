@@ -195,7 +195,7 @@ app.post('/fetchLeaderboard', async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var leaderMap = {};
-        await Leaderboard.find({}).sort({date: -1}).then(async (docs) => {
+        await Leaderboard.find({}).sort({date: 1}).then(async (docs) => {
             var count = 0;
                 docs.forEach(async (doc) => {
                     leaderMap[count] = {

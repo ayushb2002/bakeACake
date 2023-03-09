@@ -150,7 +150,9 @@ const Questions = () => {
             <>
             <span className='text-4xl font-bold font-Satisfy'>File - </span> <br />
             <br />
-            <p className='pl-5 text-xl font-bold font-Rajdhani'>{file}</p> 
+            <p className='pl-5 text-xl font-bold font-Rajdhani'>
+              <a href={file} target="_blank">Click here</a>  
+            </p> 
             </>
           )}
 

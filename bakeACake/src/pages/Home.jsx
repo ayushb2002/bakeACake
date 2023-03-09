@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import bg1 from '../img/bg1.png';
-import axios from axios;
+import axios from 'axios';
 
 const Home = () => {
 
