@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import bg1 from '../img/bg1.png'
+import bg1 from '../img/bg1.png';
+import axios from axios;
+
 const Home = () => {
+
+  useEffect(() => {
+    (async () => {
+      const response = axios.get('https://bakeacake.onrender.com/');
+      const result = await response.json();
+      console.log(result);
+    })();
+  }, [])
+  
+
   return (
     <section>
       <Navbar />
