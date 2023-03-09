@@ -5,7 +5,6 @@ var bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Question = require('./models/questions');
 const Leaderboard = require('./models/leaderboards');
-const { request } = require('express');
 const app = express();
 require('dotenv').config();
 app.use(cors());
