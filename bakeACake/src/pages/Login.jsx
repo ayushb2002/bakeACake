@@ -10,6 +10,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(false);
 
   useLayoutEffect(() => {
     if(Cookies.get('loggedIn')=='true')
@@ -21,6 +22,7 @@ const Login = () => {
   const signIn = async (e) => {
     e.preventDefault();
     toast('Verifying credentials...');
+    setDisable(true);
     try
     {
       const response = await axios.post('https://bakeacake.onrender.com/login', {
@@ -85,7 +87,7 @@ const Login = () => {
               <input type="password" name="password" placeholder='Enter password' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className='form-control mt-5'>
-              <button type='submit' className='btn btn-neutral'>Login</button>
+              <button type='submit' className='btn btn-neutral' disabled={disable}>Login</button>
             </div>
           </form>
         </div>
