@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       const response = await axios.get('https://bakeacake.onrender.com/');
-      const result = await response.json();
+      const result = await response.data;
       console.log(result);
     })();
   }, [])

@@ -20,6 +20,7 @@ const Login = () => {
 
   const signIn = async (e) => {
     e.preventDefault();
+    toast('Verifying credentials...');
     try
     {
       const response = await axios.post('https://bakeacake.onrender.com/login', {
