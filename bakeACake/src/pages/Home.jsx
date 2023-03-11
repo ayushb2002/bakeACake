@@ -15,7 +15,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    ref.current = setInterval(apiWake, 14 * 60 * 1000);
+    ref.current = setInterval(apiWake, 1 * 60 * 1000);
   
     return () => {
       if(ref.current){

@@ -1,6 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, 
+	max: 100, 
+	standardHeaders: true,
+	legacyHeaders: false,
+});
 var bcrypt = require('bcryptjs');
 const User = require('./models/user');
 const Question = require('./models/questions');
@@ -9,6 +16,7 @@ const app = express();
 require('dotenv').config();
 app.use(cors());
 app.use(express.json());
+app.use(limiter);
 var salt = bcrypt.genSaltSync(10);
 const port = process.env.PORT || 4000;
 
