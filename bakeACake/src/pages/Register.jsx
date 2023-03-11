@@ -14,6 +14,7 @@ const Register = () => {
   const [enrollment, setEnrollment] = useState(0);
   const [password, setPassword] = useState('');
   const [disable, setDisable] = useState(true);
+  const [passphrase, setPassphrase] = useState('');
 
   useLayoutEffect(() => {
     if(Cookies.get('loggedIn')=='true')
@@ -24,34 +25,44 @@ const Register = () => {
 
   const signUp = async (e) => {
     e.preventDefault();
-    try
+    if(passphrase == import.meta.env.VITE_PASSPHRASE)
     {
-      const response = await axios.post('https://bakeacake.onrender.com/register', {
-        access_token: import.meta.env.VITE_ACCESS_TOKEN,
-        email: email,
-        name: `${fname} ${lname}`,
-        enrollment: enrollment,
-        password: password,
-      });
-      if (response.data.success) {
-        toast.success('Registered successfully!');
-        setTimeout(() => {
-          window.location.href ='/login';
-        }, 1000);
-      } else {
-        toast.error('Could not register. Kindly check your data and try again!');
+      try
+      {
+        const response = await axios.post('https://bakeacake.onrender.com/register', {
+          access_token: import.meta.env.VITE_ACCESS_TOKEN,
+          email: email,
+          name: `${fname} ${lname}`,
+          enrollment: enrollment,
+          password: password,
+        });
+        if (response.data.success) {
+          toast.success('Registered successfully!');
+          setTimeout(() => {
+            window.location.href ='/login';
+          }, 1000);
+        } else {
+          toast.error('Could not register. Kindly check your data and try again!');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      }
+      catch(err)
+      {
+        console.log(err);
+        toast.error('Server error');
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 2000);
       }
     }
-    catch(err)
+    else
     {
-      console.log(err);
-      toast.error('Server error');
+      toast.error('Incorrect passphrase!');
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 1000);
     }
   }
   return (
@@ -97,6 +108,12 @@ const Register = () => {
                 <span className='label-text font-bold'>Password</span>
               </label>
               <input type="password" name="password" placeholder='Set a strong password for your profile' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <div className='form-control'>
+              <label className='label' htmlFor="passPhrase">
+                <span className='label-text font-bold'>Pass phrase (provided to JIIT students)</span>
+              </label>
+              <input type="text" name="passPhrase" placeholder='Ask GDSC coordinators for passphrase' className='input input-bordered' onChange={(e) => setPassphrase(e.target.value)} />
             </div>
             <div className="form-control mt-5 flex justify-center items-center">
               <HCaptcha
