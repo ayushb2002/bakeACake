@@ -83,37 +83,37 @@ const Register = () => {
               <label className='label' htmlFor="first_name">
                 <span className='label-text font-bold'>First Name</span>
               </label>
-              <input type="text" name='first_name' placeholder='Enter first name' className='input input-bordered' onChange={(e) => setFname(e.target.value)} />
+              <input type="text" name='first_name' placeholder='Enter first name' className='input input-bordered' onChange={(e) => setFname(e.target.value)} required={true} />
             </div>
             <div className='form-control'>
               <label className='label' htmlFor="last_name">
                 <span className='label-text font-bold'>Last Name</span>
               </label>
-              <input type="text" name="last_name" placeholder='Enter last name' className='input input-bordered' onChange={(e) => setLname(e.target.value)} />
+              <input type="text" name="last_name" placeholder='Enter last name' className='input input-bordered' onChange={(e) => setLname(e.target.value)} required={true} />
             </div>
             <div className='form-control'>
               <label className='label' htmlFor="enrollment">
                 <span className='label-text font-bold'>Enrollment Number</span>
               </label>
-              <input type="number" name="enrollment" placeholder='Enter college enrollment number' className='input input-bordered' onChange={(e) => setEnrollment(e.target.value)} />
+              <input type="number" name="enrollment" placeholder='Enter college enrollment number' className='input input-bordered' onChange={(e) => setEnrollment(e.target.value)} required={true} />
             </div>
             <div className='form-control'>
               <label className='label' htmlFor="email">
                 <span className='label-text font-bold'>Email Address</span>
               </label> 
-              <input type="email" name="email" placeholder='Enter email address' className='input input-bordered' onChange={(e) => setEmail(e.target.value)}/>
+              <input type="email" name="email" placeholder='Enter email address' className='input input-bordered' onChange={(e) => setEmail(e.target.value)} required={true} />
             </div>
             <div className='form-control'>
               <label className='label' htmlFor="password">
                 <span className='label-text font-bold'>Password</span>
               </label>
-              <input type="password" name="password" placeholder='Set a strong password for your profile' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" name="password" placeholder='Set a strong password for your profile' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} required={true} />
             </div>
             <div className='form-control'>
               <label className='label' htmlFor="passPhrase">
                 <span className='label-text font-bold'>Pass phrase (provided to JIIT students)</span>
               </label>
-              <input type="text" name="passPhrase" placeholder='Ask GDSC coordinators for passphrase' className='input input-bordered' onChange={(e) => setPassphrase(e.target.value)} />
+              <input type="text" name="passPhrase" placeholder='Ask GDSC coordinators for passphrase' className='input input-bordered' onChange={(e) => setPassphrase(e.target.value)} required={true} />
             </div>
             <div className="form-control mt-5 flex justify-center items-center">
               <HCaptcha
