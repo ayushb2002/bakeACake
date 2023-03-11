@@ -5,12 +5,13 @@ import bg3 from '../img/bg3.png';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(true);
 
   useLayoutEffect(() => {
     if(Cookies.get('loggedIn')=='true')
@@ -78,13 +79,19 @@ const Login = () => {
               <label className='label' htmlFor="email">
                 <span className='label-text font-bold'>Email Address</span>
               </label> 
-              <input type="email" name="email" placeholder='Enter email address' className='input input-bordered' onChange={(e) => setEmail(e.target.value)}/>
+              <input type="email" name="email" placeholder='Enter email address' className='input input-bordered' onChange={(e) => setEmail(e.target.value)} required={true}/>
             </div>
-            <div className='form-control'>
+            <div className='form-control mb-5'>
               <label className='label' htmlFor="password">
                 <span className='label-text font-bold'>Password</span>
               </label>
-              <input type="password" name="password" placeholder='Enter password' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" name="password" placeholder='Enter password' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} required={true} />
+            </div>
+            <div className="form-control mb-5 flex justify-center items-center">
+              <HCaptcha
+                sitekey={import.meta.env.VITE_SITE_KEY}
+                onVerify={(token) => setDisable(false)}
+              />
             </div>
             <div className='form-control mt-5'>
               <button type='submit' className='btn btn-neutral' disabled={disable}>Login</button>

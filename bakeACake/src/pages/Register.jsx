@@ -5,6 +5,7 @@ import bg2 from '../img/bg2.png';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 const Register = () => {
   const [fname, setFname] = useState('');
@@ -12,6 +13,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [enrollment, setEnrollment] = useState(0);
   const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(true);
 
   useLayoutEffect(() => {
     if(Cookies.get('loggedIn')=='true')
@@ -96,8 +98,14 @@ const Register = () => {
               </label>
               <input type="password" name="password" placeholder='Set a strong password for your profile' className='input input-bordered' onChange={(e) => setPassword(e.target.value)} />
             </div>
+            <div className="form-control mt-5 flex justify-center items-center">
+              <HCaptcha
+                sitekey={import.meta.env.VITE_SITE_KEY}
+                onVerify={(token) => setDisable(false)}
+              />
+            </div>
             <div className='form-control mt-5'>
-              <button type='submit' className='btn btn-neutral'>Register</button>
+              <button type='submit' className='btn btn-neutral' disabled={disable}>Register</button>
             </div>
           </form>
         </div>
