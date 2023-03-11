@@ -21,6 +21,10 @@ const Home = () => {
       if(ref.current){
         clearInterval(ref.current);
       }
+      else
+      {
+        console.log('Welcome!');
+      }
     }
   }, [])
   
