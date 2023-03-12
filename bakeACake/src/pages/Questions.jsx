@@ -18,6 +18,7 @@ const Questions = () => {
     e.preventDefault();
     try
     {
+      setDisable(true);
       const response = await axios.post('https://bakeacake.onrender.com/matchAnswer', {
         access_token: import.meta.env.VITE_ACCESS_TOKEN,
         qNo: qNo,
