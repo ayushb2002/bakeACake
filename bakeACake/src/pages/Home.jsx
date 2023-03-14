@@ -9,9 +9,9 @@ const Home = () => {
       <Navbar />
       <div className='lg:grid lg:grid-cols-3'>
         <div className='hidden lg:block lg:p-[10%]'>
-          <img src={bg1} alt='bg1' className='h-[50vh] rounded-lg' />
+          <img src={bg1} alt='bg1' className='h-[50vh] mt-16 rounded-lg' />
         </div>
-        <div className='p-[10%] col-span-2'>
+        <div className='px-[10%] py-[5%] col-span-2'>
           <div className='py-5'>
             <span className='text-7xl font-bold font-Satisfy text-black'> - Bake A Cake -</span>
           </div>
