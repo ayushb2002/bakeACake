@@ -49,6 +49,8 @@ const Questions = () => {
       else if (result.verified == false)
       {
         toast.error('Wrong answer!');
+        setDisable(false);
+        setAnswer('');
       }
       else
       {
@@ -169,7 +171,7 @@ const Questions = () => {
             <span className='text-4xl font-bold font-Satisfy'>Answer here - </span>
             <form className='my-5 pl-5' onSubmit={submitAnswer}>
               <div className='form-control lg:w-[30vw]'>
-                <input type="text" name="answer" className='input input-bordered' placeholder='Enter your answer' onChange={(e) => setAnswer(e.target.value)}/>
+                <input type="text" name="answer" className='input input-bordered' placeholder='Enter your answer' onChange={(e) => setAnswer(e.target.value)} required={true} />
               </div>
               <div className='form-control lg:w-[10vw] py-5'>
                 <button className='btn btn-danger' type='submit' disabled={disable}>Submit</button>
