@@ -12,12 +12,6 @@
     "express-rate-limit": "^6.7.0",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.0",
-    "nodemon": "^2.0.20"
-  },
-  "scripts": {
-    "client": "yarn --cwd client run start",
-    "server": "nodemon index",
-    "start": "concurrently \"yarn run server\" \"yarn run client\""
+    "mongoose": "^7.0.0"
   }
 }
