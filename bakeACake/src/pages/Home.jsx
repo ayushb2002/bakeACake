@@ -17,9 +17,9 @@ const Home = () => {
           </div>
           <div className='py-5'>
             <span className='text-2xl font-semibold font-Rajdhani'>
-              Welcome to the digital bakery. <br /> \
+              Welcome to the digital bakery. <br />
               Find all ingredients to bake your delicious cake! <br />
-              <a href="/howToBake">Click here</a> to know more
+              <a href="/howToBake" className='underline'>Click here</a> to know more
             </span>
           </div>
           <div className='mt-10 pb-2 text-center'>
