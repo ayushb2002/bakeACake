@@ -7,6 +7,7 @@ const Logout = () => {
       Cookies.remove('email');
       Cookies.remove('name');
       Cookies.remove('loggedIn');
+      Cookies.remove('sessionToken');
       window.location.href = '/login';
     }, [])
   return (

@@ -23,6 +23,8 @@ const Questions = () => {
         access_token: import.meta.env.VITE_ACCESS_TOKEN,
         qNo: qNo,
         answer: `${answer}`.toLowerCase()
+      }, {
+        headers: {'Authorization': `Bearer ${Cookies.get('sessionToken')}`} 
       });
       const result = await response.data;
       if(result.verified == true)
@@ -32,6 +34,8 @@ const Questions = () => {
           access_token: import.meta.env.VITE_ACCESS_TOKEN,
           qNo: qNo,
           enrollment: enroll
+        }, {
+          headers: {'Authorization': `Bearer ${Cookies.get('sessionToken')}`} 
         });
         const result2 = await response2.data;
         if(result2.success)
@@ -65,7 +69,7 @@ const Questions = () => {
 
   useLayoutEffect(() => {
     (async ()=>{
-      if(Cookies.get('loggedIn') == "true")
+      if(Cookies.get('loggedIn') == "true" && Cookies.get('sessionToken').length > 0)
       {
         const enrollment = Cookies.get('enrollment');
         setEnroll(parseInt(enrollment));
@@ -74,6 +78,8 @@ const Questions = () => {
           const response = await axios.post('https://bakeacake.onrender.com/fetchUserProgress', {
             access_token: import.meta.env.VITE_ACCESS_TOKEN,
             enrollment: enrollment
+          }, {
+            headers: {'Authorization': `Bearer ${Cookies.get('sessionToken')}`} 
           });
           var progress = await response.data;
           if(progress.error)
@@ -88,6 +94,8 @@ const Questions = () => {
               const response2 = await axios.post('https://bakeacake.onrender.com/returnQuestion', {
                 access_token: import.meta.env.VITE_ACCESS_TOKEN,
                 qNo: `${parseInt(progress.qNo)+1}`
+              }, {
+                headers: {'Authorization': `Bearer ${Cookies.get('sessionToken')}`} 
               });
               const question = await response2.data;
               if(question.error)
@@ -115,7 +123,7 @@ const Questions = () => {
         catch(err)
         {
           console.log(err);
-              toast.error('Something went wrong');
+              toast.error('Session timed out');
               setTimeout(() => {
                 window.location.href = '/logout';
               }, 1000);

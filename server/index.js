@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const http = require("http");
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
+const jwt = require('jsonwebtoken');
+const auth = require('./middleware/auth');
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, 
-	max: 100, 
+	max: 300, 
 	standardHeaders: true,
 	legacyHeaders: false,
 });
@@ -17,8 +20,10 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 app.use(limiter);
+const server = http.createServer(app);
+
 var salt = bcrypt.genSaltSync(10);
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || process.env.API_PORT;
 
 main().catch(err => console.log(err));
 
@@ -31,14 +36,14 @@ async function main() {
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error: "));
     db.once("open", function () {
-      console.log("Connected successfully");
+        console.log("Connected successfully");
     });
     
-    app.listen(port, () => console.log(`Listening on port ${port}`));
+    server.listen(port, () => console.log(`Listening on port ${port}`));
 }
 
 app.get('/', (req, res) => {
-  res.send('Access protected!');
+  res.send('Bake a cake!');
 });
 
 app.post('/register', async (req, res) => {
@@ -57,9 +62,17 @@ app.post('/register', async (req, res) => {
         {
             const user = new User();
             user.enrollment = `${req.body.enrollment}`;
-            user.email = `${req.body.email}`;
+            user.email = `${req.body.email}`.toLowerCase();
             user.name = `${req.body.name}`;
             user.password = bcrypt.hashSync(`${req.body.password}`, salt);
+
+            const token = jwt.sign({
+                enrollment: `${req.body.enrollment}`,
+                email: `${req.body.email}`.toLowerCase(),
+                name: `${req.body.name}`
+            }, process.env.JWT_SECRET_KEY, {expiresIn: '1h'});
+
+            user.token = token;
             user.save();
 
             const q = await Question.findOne({'qNo': 0});
@@ -68,8 +81,8 @@ app.post('/register', async (req, res) => {
             lb.points = 0;
             lb.lastAttempt = q;
             lb.save();
+            res.send({'success': flag});
         }
-        res.send({'success': flag});
     }
     else
     {
@@ -97,7 +110,18 @@ app.post('/login', async (req, res) => {
         });
         if(flag)
         {
-            res.send({'success': flag, 'name': name, 'enrollment': enrollment});
+            const token = jwt.sign({
+                enrollment: `${req.body.enrollment}`,
+                email: `${req.body.email}`.toLowerCase(),
+                name: `${req.body.name}`
+            }, process.env.JWT_SECRET_KEY, {expiresIn: '1h'});
+
+            res.send({
+                'success': true, 
+                'name': name,
+                'enrollment': enrollment,
+                'token': token
+            });
         }
         else
         {
@@ -150,7 +174,7 @@ app.post('/addQuestion', async (req, res) => {
     }
 });
 
-app.post('/updateLeaderboard', async (req, res) => {
+app.post('/updateLeaderboard', auth, async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var flag = false;
@@ -246,7 +270,7 @@ app.post('/fetchLeaderboard', async (req, res) => {
     }
 });
 
-app.post('/returnQuestion', async (req, res) => { 
+app.post('/returnQuestion', auth, async (req, res) => { 
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         await Question.findOne({'qNo': `${req.body.qNo}`}).then((docs) => {
@@ -262,7 +286,7 @@ app.post('/returnQuestion', async (req, res) => {
     }
 });
 
-app.post('/fetchUserProgress', async (req, res) => {
+app.post('/fetchUserProgress', auth, async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         const user = await User.findOne({'enrollment': `${req.body.enrollment}`});
@@ -297,7 +321,7 @@ app.post('/fetchUserProgress', async (req, res) => {
     }
 });
 
-app.post('/matchAnswer', async(req, res) => {
+app.post('/matchAnswer', auth, async(req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         await Question.findOne({'qNo': `${req.body.qNo}`}).then(async (docs) => {

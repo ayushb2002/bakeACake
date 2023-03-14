@@ -37,6 +37,7 @@ const Login = () => {
       Cookies.set('email', email);
       Cookies.set('enrollment', response.data.enrollment);
       Cookies.set('loggedIn', 'true');
+      Cookies.set('sessionToken', response.data.token);
       toast.success('Logged in successfully');
       setTimeout(() => {
         window.location.href = '/profile';

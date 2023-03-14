@@ -10,7 +10,7 @@ const Profile = () => {
   const [enrollment, setEnrollment] = useState(0);
 
   useEffect(() => {
-    if(Cookies.get('loggedIn')=='true')
+    if(Cookies.get('loggedIn')=='true' && Cookies.get('sessionToken') != '')
     {
       setName(Cookies.get('name'));
       setEmail(Cookies.get('email'));

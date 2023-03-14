@@ -1,35 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import bg1 from '../img/bg1.png';
-import axios from 'axios';
 
 const Home = () => {
-
-  const ref = useRef(null);
-
-  const apiWake = async () => {
-    const response = await axios.get('https://bakeacake.onrender.com/');
-    const result = await response.data;
-    console.log(result);
-  }
-
-  useEffect(() => {
-    apiWake();
-    ref.current = setInterval(apiWake, 14 * 60 * 1000);
-  
-    return () => {
-      if(ref.current){
-        clearInterval(ref.current);
-      }
-      else
-      {
-        console.log('Welcome!');
-      }
-    }
-  }, [])
-  
-
   return (
     <section>
       <Navbar />
