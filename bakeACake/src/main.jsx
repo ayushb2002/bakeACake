@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import Questions from './pages/Questions';
 import Logout from './pages/Logout';
 import { Toaster } from 'react-hot-toast';
+import Clue from './pages/Clue';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: '/logout',
     element: <Logout />,
+  },
+  {
+    path: '/WKDTQX',
+    element: <Clue />
   }
 ]);
 
