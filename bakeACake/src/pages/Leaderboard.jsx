@@ -42,7 +42,7 @@ const Leaderboard = () => {
   return (
     <section>
     <Navbar />
-      <div className='py-10 px-5 lg:px-36 lg:h-[80vh] overflow-x-auto min-h-screen'>
+      <div className='py-10 px-5 lg:px-36 lg:mh-[80vh] overflow-x-auto min-h-screen'>
         <div className='my-5 w-100 grid grid-cols-3'>
           <div className='flex justify-start'>
             <button className='text-3xl font-bold font-TiltPrism' onClick={(e) => {
