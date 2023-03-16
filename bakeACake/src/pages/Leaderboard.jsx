@@ -61,7 +61,6 @@ const Leaderboard = () => {
           <div className='flex justify-end'> 
           <button className='text-3xl font-bold font-TiltPrism' onClick={(e) => {
             e.preventDefault();
-            alert('Clicked');
             setLower(lower+10);
             setUpper(upper+10);
           }} disabled={upper<=limit?false:true}>
