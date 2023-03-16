@@ -27,6 +27,7 @@ const Register = () => {
     e.preventDefault();
     if(passphrase == import.meta.env.VITE_PASSPHRASE)
     {
+      setDisable(true);
       try
       {
         const response = await axios.post('https://bakeacake.onrender.com/register', {
