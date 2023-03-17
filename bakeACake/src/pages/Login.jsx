@@ -26,7 +26,7 @@ const Login = () => {
     setDisable(true);
     try
     {
-      const response = await axios.post('http://92.242.187.129:5000/login', {
+      const response = await axios.post('https://92.242.187.129:5000/login', {
       access_token: import.meta.env.VITE_ACCESS_TOKEN,
       email: email,
       password: password

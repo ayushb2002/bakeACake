@@ -30,7 +30,7 @@ const Register = () => {
       setDisable(true);
       try
       {
-        const response = await axios.post('http://92.242.187.129:5000/register', {
+        const response = await axios.post('https://92.242.187.129:5000/register', {
           access_token: import.meta.env.VITE_ACCESS_TOKEN,
           email: email,
           name: `${fname} ${lname}`,
