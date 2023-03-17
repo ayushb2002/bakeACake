@@ -15,7 +15,7 @@ const Leaderboard = () => {
       toast("It usually takes a few seconds to load the leaderboard");
       try {
         const response = await axios.post(
-          "https://92.242.187.129:5000/fetchLeaderboard",
+          "https://bakeacakeapi.online:5000/fetchLeaderboard",
           {
             access_token: import.meta.env.VITE_ACCESS_TOKEN,
           },
