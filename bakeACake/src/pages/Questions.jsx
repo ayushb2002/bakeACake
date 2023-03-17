@@ -19,7 +19,7 @@ const Questions = () => {
     try
     {
       setDisable(true);
-      const response = await axios.post('https://bakeacake.onrender.com/matchAnswer', {
+      const response = await axios.post('http://92.242.187.129:5000/matchAnswer', {
         access_token: import.meta.env.VITE_ACCESS_TOKEN,
         qNo: qNo,
         answer: `${answer}`.toLowerCase()
@@ -30,7 +30,7 @@ const Questions = () => {
       if(result.verified == true)
       {
         toast.success('Correct answer');
-        const response2 = await axios.post('https://bakeacake.onrender.com/updateLeaderboard',{
+        const response2 = await axios.post('http://92.242.187.129:5000/updateLeaderboard',{
           access_token: import.meta.env.VITE_ACCESS_TOKEN,
           qNo: qNo,
           enrollment: enroll
@@ -77,7 +77,7 @@ const Questions = () => {
         setEnroll(parseInt(enrollment));
         try
         {
-          const response = await axios.post('https://bakeacake.onrender.com/fetchUserProgress', {
+          const response = await axios.post('http://92.242.187.129:5000/fetchUserProgress', {
             access_token: import.meta.env.VITE_ACCESS_TOKEN,
             enrollment: enrollment
           }, {
@@ -93,7 +93,7 @@ const Questions = () => {
             setQNo(parseInt(progress.qNo)+1);
             setPoints(parseInt(progress.points));
             try{
-              const response2 = await axios.post('https://bakeacake.onrender.com/returnQuestion', {
+              const response2 = await axios.post('http://92.242.187.129:5000/returnQuestion', {
                 access_token: import.meta.env.VITE_ACCESS_TOKEN,
                 qNo: `${parseInt(progress.qNo)+1}`
               }, {
