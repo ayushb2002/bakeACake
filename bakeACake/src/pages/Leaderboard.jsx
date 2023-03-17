@@ -3,8 +3,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import https from "https";
-import fs from 'fs';
 
 const Leaderboard = () => {
   const [lb, setLb] = useState([]);
@@ -21,13 +19,6 @@ const Leaderboard = () => {
           {
             access_token: import.meta.env.VITE_ACCESS_TOKEN,
           },
-          {
-            httpsAgent: new https.Agent({
-              rejectUnauthorized: false,
-              cert: fs.readFileSync('./server.cert'),
-              key: fs.readFileSync('./server.key'),
-            })
-          }
         );
         const leaderboard = await response.data.data;
         var lbArr = [];
