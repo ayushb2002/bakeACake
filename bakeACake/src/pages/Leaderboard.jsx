@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import https from "https";
+import fs from 'fs';
 
 const Leaderboard = () => {
   const [lb, setLb] = useState([]);
@@ -22,7 +23,9 @@ const Leaderboard = () => {
           },
           {
             httpsAgent: new https.Agent({
-              rejectUnauthorized: false
+              rejectUnauthorized: false,
+              cert: fs.readFileSync('./server.cert'),
+              key: fs.readFileSync('./server.key'),
             })
           }
         );
