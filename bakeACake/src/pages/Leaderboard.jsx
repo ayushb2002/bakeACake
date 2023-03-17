@@ -18,6 +18,10 @@ const Leaderboard = () => {
       {
         const response = await axios.post('https://92.242.187.129:5000/fetchLeaderboard', {
         access_token: import.meta.env.VITE_ACCESS_TOKEN
+      }, {
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false
+        })
       });
       const leaderboard = await response.data.data;
       var lbArr = [];
