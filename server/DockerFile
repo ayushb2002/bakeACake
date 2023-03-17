@@ -1,0 +1,15 @@
+FROM node:18.15-bullseye
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn --silent
+
+COPY . .
+
+EXPOSE 5000
+CMD ["node", "./index.js"]
+

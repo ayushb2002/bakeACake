@@ -31,15 +31,16 @@ async function main() {
     mongoose.connect(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    });
+    }).then(() => {
+        console.log("Connected to MongoDB");
+        server.listen(port, () => console.log(`Listening on port ${port}`));
+    }).catch((err) => console.log(`Error connecting to MongoDB: ${err}`));
     
-    const db = mongoose.connection;
-    db.on("error", console.error.bind(console, "connection error: "));
-    db.once("open", function () {
-        console.log("Connected successfully");
-    });
-    
-    server.listen(port, () => console.log(`Listening on port ${port}`));
+    // const db = mongoose.connection;
+    // db.on("error", console.error.bind(console, "connection error: "));
+    // db.once("open", function () {
+    //     console.log("Connected successfully");
+    // });
 }
 
 app.post('/register', async (req, res) => {
