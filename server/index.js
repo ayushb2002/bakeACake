@@ -42,10 +42,6 @@ async function main() {
     server.listen(port, () => console.log(`Listening on port ${port}`));
 }
 
-app.get('/', (req, res) => {
-  res.send('Bake a cake!');
-});
-
 app.post('/register', async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
