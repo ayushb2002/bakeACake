@@ -43,17 +43,28 @@ async function main() {
     // });
 }
 
+app.get('/', (req, res) => {
+    res.send({'success': 'Connected successfully'});
+})
+
 app.post('/register', async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)
     {
         var flag = true;
-        await User.findOne({
-            'email': `${req.body.email}`
-        }).then(docs => {
-            if (Object.keys(docs).length > 0) {
-            flag = false;
-            }
-        }).catch(err => console.log(err));
+        try
+        {
+            await User.findOne({
+                'email': `${req.body.email}`
+            }).then(docs => {
+                if (Object.keys(docs).length > 0) {
+                flag = false;
+                }
+            }).catch(err => console.log(err));
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
 
         if(flag)
         {
@@ -131,45 +142,45 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// app.post('/addQuestion', async (req, res) => {
-//     if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
-//     {
-//         var qno = `${req.query.qno}`;
-//         var ques = `${req.query.question}`;
-//         var file = `${req.query.file}`;
-//         var answer = `${req.query.answer}`;
-//         var flag = true;
+app.post('/addQuestion', async (req, res) => {
+    if(process.env.API_ACCESS_TOKEN == `${req.query.access_token}`)
+    {
+        var qno = `${req.query.qno}`;
+        var ques = `${req.query.question}`;
+        var file = `${req.query.file}`;
+        var answer = `${req.query.answer}`;
+        var flag = true;
 
-//         await Question.findOne({
-//             'qNo': qno
-//         }).then((docs) => {
-//             if(Object.keys(docs).length > 0)
-//                 flag = false;
-//         }).catch(err => {console.log(err); flag=false;});
+        await Question.findOne({
+            'qNo': qno
+        }).then((docs) => {
+            if(Object.keys(docs).length > 0)
+                flag = false;
+        }).catch(err => {console.log(err); flag=false;});
 
-//         try
-//         {
-//             const quest = new Question()
-//             quest.qNo = qno;
-//             quest.question = ques;
-//             quest.file = file;
-//             quest.answer = bcrypt.hashSync(answer, salt);
-//             quest.save();
-//             flag = true;
-//         }
-//         catch(err)
-//         {
-//             console.log(err);
-//             flag = false;
-//         }
+        try
+        {
+            const quest = new Question()
+            quest.qNo = qno;
+            quest.question = ques;
+            quest.file = file;
+            quest.answer = bcrypt.hashSync(answer, salt);
+            quest.save();
+            flag = true;
+        }
+        catch(err)
+        {
+            console.log(err);
+            flag = false;
+        }
 
-//         res.send({'success': flag});
-//     }
-//     else
-//     {
-//         res.send({'access_error': 'Illegal Operation'});
-//     }
-// });
+        res.send({'success': flag});
+    }
+    else
+    {
+        res.send({'access_error': 'Illegal Operation'});
+    }
+});
 
 app.post('/updateLeaderboard', auth, async (req, res) => {
     if(process.env.API_ACCESS_TOKEN == `${req.body.access_token}`)

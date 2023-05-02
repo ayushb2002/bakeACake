@@ -11,7 +11,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(false);
 
   useLayoutEffect(() => {
     if(Cookies.get('loggedIn')=='true')
@@ -26,7 +26,7 @@ const Login = () => {
     setDisable(true);
     try
     {
-      const response = await axios.post('http://92.242.187.129:5000/login', {
+      const response = await axios.post('http://localhost:4000/login', {
       access_token: import.meta.env.VITE_ACCESS_TOKEN,
       email: email,
       password: password

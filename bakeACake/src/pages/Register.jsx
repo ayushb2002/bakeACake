@@ -13,7 +13,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [enrollment, setEnrollment] = useState(0);
   const [password, setPassword] = useState('');
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(false);
   const [passphrase, setPassphrase] = useState('');
 
   useLayoutEffect(() => {
@@ -30,7 +30,7 @@ const Register = () => {
       setDisable(true);
       try
       {
-        const response = await axios.post('http://92.242.187.129:5000/register', {
+        const response = await axios.post('http://localhost:4000/register', {
           access_token: import.meta.env.VITE_ACCESS_TOKEN,
           email: email,
           name: `${fname} ${lname}`,
